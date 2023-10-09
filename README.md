@@ -1,2 +1,5 @@
-# BharatIntern_Stock
-Bhsrat Internship stock project 
+# BharatIntern_Stock Price prediction
+Objective: To predict the stock price of a company using Long Short-Term Memory (LSTM)
+Description: LSTM is one type of recurrent neural network which is used to learn order dependence in sequence prediction problems. Due to its capability of storing past information, LSTM is very useful in predicting stock prices because  future stock prices depends on the previous prices.
+
+We considered a data from yfinance package which contain various variables namely: Date, Open, High, Low, Close, Adj Close and Volume. After iporting the data we first visualized the data we have considered using line graph from which we concude that the stock prices have incresed over the period of time. Further, we forward to data processing, which includes, preparation of training dataset and test dataset. The we move forward to setting up LSTM Network Architecture. MOving forward we trained the LSTM Model and evaluated the model which seems to be working well as per the value of rse. Further we used the trained LSTM Model to predict the stock prices which seems to be increasing further more.
