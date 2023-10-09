@@ -1,49 +1,28 @@
 #pip install yfinance
 #pip install tensorflow
 
-
 import math
 import yfinance as yf
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler 
-import matplotlib.pyplot as plt
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-
-stock_data = yf.download('AAPL', start='2011-01-01', end='2021-10-01')
-stock_data.head()
-
-import math
-
-
-import yfinance as yf
-import numpy as np
-import pandas as pd
-
-
 from sklearn.preprocessing import MinMaxScaler
-
-
 import matplotlib.pyplot as plt
-
-
-
 import tensorflow as tf
-
-
 from tensorflow import keras
 from tensorflow.keras import layers
+
+#Importing AAPL dataset from yfinance dataset for  last 10 years
 stock_data = yf.download('AAPL', start='2011-01-01', end='2021-10-01')
 stock_data.head()
 
+#Plot line chart to see the historical movement
 plt.figure(figsize=(15, 8))
 plt.title('Stock Prices History')
 plt.plot(stock_data['Close'])
 plt.xlabel('Date')
 plt.ylabel('Prices ($)')
 
+# Preaparing training dataset
 close_prices = stock_data['Close']
 values = close_prices.values
 training_data_len = math.ceil(len(values)* 0.8)
@@ -62,6 +41,7 @@ for i in range(60, len(train_data)):
 x_train, y_train = np.array(x_train), np.array(y_train)
 x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
 
+#Preparing test dataset
 test_data = scaled_data[training_data_len-60: , : ]
 x_test = []
 y_test = values[training_data_len:]
@@ -80,14 +60,17 @@ model.add(layers.Dense(25))
 model.add(layers.Dense(1))
 model.summary()
 
+#Training LSTM Model
 model.compile(optimizer='adam', loss='mean_squared_error')
 model.fit(x_train, y_train, batch_size= 1, epochs=3)
 
+#Model Evaluation
 predictions = model.predict(x_test)
 predictions = scaler.inverse_transform(predictions)
 rmse = np.sqrt(np.mean(predictions - y_test)**2)
 rmse
 
+#Visualizing predicted prices
 data = stock_data.filter(['Close'])
 train = data[:training_data_len]
 validation = data[training_data_len:]
